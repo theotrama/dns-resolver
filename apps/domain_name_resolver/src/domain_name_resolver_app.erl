@@ -17,7 +17,7 @@ start(_StartType, _StartArgs) ->
     ]}
   ]),
   {ok, _} = cowboy:start_clear(
-    hello_listener,
+    domain_name_listener,
     [{port, 8080}],
     #{env => #{dispatch => Dispatch}}
   ),
