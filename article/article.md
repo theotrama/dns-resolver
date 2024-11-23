@@ -17,16 +17,14 @@ deeper and look into a protocol that is empowering the internet. The domain name
 The domain name
 system was invented to make the internet more user-friendly. With TCP/IP you of course could use IP addresses to connect
 to a server but who can remember that for example juliusbaer.com has the IP of 188.92.48.169? Here DNS comes into play
-as it allows us to resolve a server name to an IP address. The way this works is that you have 13 logical root DNS
-servers. You can find them here https://www.iana.org/domains/root/servers. These are not physical servers so there can
-be much more than 13 physical servers providing root level DNS resolution. Actually there are currently about 1916 root DNS server instances
-https://root-servers.org/. These 1916 share the 13 root IP addresses by using ANYCAST. If you now want to resolve juliusbaer.com to
+as it allows us to resolve a server name to an IP address. The domain name system is a hierarchical system where at the
+top
+you can find 13 logical root DNS servers https://www.iana.org/domains/root/servers. If you now want to resolve
+juliusbaer.com to
 an IP address you can go to any of the 13 DNS root servers and ask: “Hey do you know the IP address of juliusbaer.com?”.
 Probably it will not know the address immediately, but it might know which other name server could know about it. It
-thus
-returns a list of authority records that point to name servers that might know more about juliusbaer.com. If you are
-even luckier you get a list of additional records that provide directly an IP address for these authoritative name
-servers. So the search goes on. We ask the next name server if it knows the IP address of juliusbaer.com. Again it
+thus returns a list of name servers that might know more about juliusbaer.com. So the search goes on. We ask the next
+name server if it knows the IP address of juliusbaer.com. Again it
 doesn’t know, but it knows who might. We continue our query until we get a list of answer records and with that we
 finally have resolved juliusbaer.com to 188.92.48.169.
 
@@ -52,7 +50,9 @@ So the first query for juliusbaer.com to one of the root DNS servers would look 
   <figcaption>Figure 2: A DNS request for juliusbaer.com</figcaption>
 </figure>
 
-For that we would get the following response.
+For that we would get the following response which includes authority and additional records. In the authority records
+we get back the authoritative name server for the
+juliusbaer.com domain and in the additional record we get the IP address of this name server.
 
 <figure>
   <img src="img/juliusbaer_dns_response.svg" alt="DNS protocol">
@@ -99,9 +99,9 @@ reuse for all domain names? After all this is a great learning experience especi
 language.
 For implementing protocols the only language of choice can of course only be... Erlang. Not only because it has its own
 introduction movie on YouTube [Erlang: The Movie](https://www.youtube.com/watch?v=xrIjfIjssLE&t=6s)
-but also because it supports binary pattern matching, more on this later. Greatly simplified our DNS resolver will have
-the following
-structure:
+but also because it supports binary pattern matching which makes it the ideal language for implementing binary
+protocols. Greatly simplified our DNS resolver will have
+the following structure:
 
 ```
 recursivelyResolve:
@@ -158,7 +158,7 @@ resolve(Domain, DnsServer) ->
 With that we have built our own DNS resolver for resolving A records for domain names. Cool, isn't it? You can just take
 an RfC and start coding as everything you need is so nicely described in the protocol definition. Of course, I left out
 helper methods like `build_dns_request`, `send_dns_request` and others, but you can find them on
-[GitHub](https://github.com/theotrama/dns_resolver). One more method I want to share here is the
+[GitHub](https://github.com/theotrama/dns-resolver). One more method I want to share here is the
 `parse_header_section` method because it illustrates
 how nice
 Erlang is suited for implementing binary protocols. Remember the above definition of the DNS protocol
@@ -180,13 +180,13 @@ parse_header_section(Response) ->
 
 In order to play around with the DNS you can either use `nslookup` or `dig` or you can try out a small web app I built
 that
-documents the process of resolving a domain. You can go to [domainNameResolver](http://139.162.170.221/static) and paste
+documents the process of resolving a domain. You can go to https://domain-name-resolver.fly.dev and paste
 any domain
 into the search field. From that you will get back the corresponding IPs and all the steps the DNS resolver took to
 resolve
 the domain you asked for.
 
-## Additional resources
+## References
 
 If you love to try out Erlang yourself I can only highly recommend the introduction book by the language's
 founders https://erlang.org/download/erlang-book-part1.pdf. Other great articles on domain name resolution
