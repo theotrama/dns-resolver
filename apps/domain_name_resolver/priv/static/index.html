@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+
+
+        $(document).ready(function () {
+            // Prevent default form submission on Enter key press
+            $('#query-form').on('submit', function (e) {
+                e.preventDefault();
+                fetchData();
+            });
+
+            // Bind Enter key to trigger fetchData
+            $('#hostname').on('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    fetchData();
+                }
+            });
+
+            $('#query-button').on('click', function () {
+                fetchData();
+            });
+
+            function fetchData() {
+                var query = $('#QueryForm').find('input[name="hostname"]').val()
+
+                data = JSON.stringify({
+                    "query": query
+                })
+                const url = window.location.origin + "/dns"
+                $.ajax({
+                    url: url,
+                    headers: {
+                        'Accept': "application/json",
+                        'Content-Type': "application/json"
+                    },
+                    type: "POST",
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                        let ulElement = $("#resolvedIpsList");
+                        ulElement.empty();
+                        $.each(data.resolvedIps, function (index, value) {
+                            ulElement.append("<li>" + value + "</li>");
+                        });
+                        let queryStepsList = $("#queryStepsList");
+                        queryStepsList.empty();
+                        $.each(data.querySteps, function (index, value) {
+                            console.log(value)
+                            // Append each item as a <li> element
+                            queryStepsList.append("<li>" + value.dnsQueryName + " @ " + value.nameServerIp + "/" + value.nameServer + "</li>");
+                        });
+                    }
+                })
+            }
+        });
+    </script>
+</head>
+<body>
+
+<div id="QueryForm">
+    <form id="query-form">
+        <input type="text" id="hostname" name="hostname" value="google.com"><br>
+    </form>
+    <button id="query-button">Query</button>
+</div>
+<div id="Result">
+    Results
+    <ul id="resolvedIpsList"></ul>
+</div>
+<div id="QuerySteps">
+    Query steps
+    <ul id="queryStepsList"></ul>
+</div>
+
+
+</body>
+</html>

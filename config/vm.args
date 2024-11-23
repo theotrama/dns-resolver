@@ -1,0 +1,6 @@
+-sname domain_name_resolver
+
+-setcookie domain_name_resolver_cookie
+
++K true
++A30

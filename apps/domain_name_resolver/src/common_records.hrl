@@ -1,0 +1,9 @@
+-record(authority_record, {name, type, class, ttl, data_length, nameserver_name}).
+-record(additional_record, {name, type, class, ttl, data_length, ip}).
+-record(query_section, {qname, qtype, qclass}).
+-record(header, {transaction_id, qr, opcode, aa, tc, rd, ra, z, rcode, qdcount, ancount, nscount, arcount}).
+-record(dns_response, {answer_type, authority_records, additional_records, answer_records}).
+-record(dns_request, {header, query_section}).
+-record(request_response, {dns_response, dns_request, name_server, name_server_ip}).
+-record(query_step, {dns_query_name, name_server_ip, name_server}).
+-record(query_summary, {query_steps, resolved_ips}).
