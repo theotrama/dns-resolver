@@ -13,7 +13,8 @@ start(_StartType, _StartArgs) ->
   Dispatch = cowboy_router:compile([
     {'_', [
       {"/dns", request_handler, [create]},
-      {"/static", cowboy_static, {priv_file, domain_name_resolver, "static/index.html"}}
+      {"/", cowboy_static, {priv_file, domain_name_resolver, "static/index.html"}},
+      {"/favicon.ico", cowboy_static, {priv_file, domain_name_resolver, "static/favicon.ico"}}
     ]}
   ]),
   {ok, _} = cowboy:start_clear(

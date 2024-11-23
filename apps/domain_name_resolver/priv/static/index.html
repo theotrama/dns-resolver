@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
 
 
@@ -52,7 +54,6 @@
                         queryStepsList.empty();
                         $.each(data.querySteps, function (index, value) {
                             console.log(value)
-                            // Append each item as a <li> element
                             queryStepsList.append("<li>" + value.dnsQueryName + " @ " + value.nameServerIp + "/" + value.nameServer + "</li>");
                         });
                     }
@@ -63,21 +64,34 @@
 </head>
 <body>
 
-<div id="QueryForm">
+
+<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg mb-8" id="QueryForm">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-4">DNS Query</h2>
     <form id="query-form">
-        <input type="text" id="hostname" name="hostname" value="google.com"><br>
+        <div class="mb-4">
+            <label for="hostname" class="block text-sm font-medium text-gray-600">Name</label>
+            <input type="text" id="hostname" name="hostname" value="google.com"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="Enter your name">
+        </div>
     </form>
-    <button id="query-button">Query</button>
-</div>
-<div id="Result">
-    Results
-    <ul id="resolvedIpsList"></ul>
-</div>
-<div id="QuerySteps">
-    Query steps
-    <ul id="queryStepsList"></ul>
+    <button id="query-button"
+            class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        Query
+    </button>
 </div>
 
+<div id="Result" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg mb-8">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Results</h2>
+    <ul class="list-disc pl-6 space-y-2" id="resolvedIpsList">
+    </ul>
+</div>
+
+<div id="QuerySteps" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg mb-8">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Query steps</h2>
+    <ul class="list-disc pl-6 space-y-2" id="queryStepsList">
+    </ul>
+</div>
 
 </body>
 </html>
