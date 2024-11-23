@@ -13,7 +13,9 @@ resolver:run("google.com").
 ```
 
 ## Website
-To run the browser resolver. Afterwards, go to http://localhost:8080/static.
+To run the browser resolver. Afterwards, go to http://localhost:8080.
 ```bash
 rebar3 shell # from root directory
 ```
+There is also a live version deployed at https://domain-name-resolver.fly.dev, and you can find an accompanying article
+with more information here: [article.md](article/article.md).
